@@ -1,38 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 環境構築
 
-## Getting Started
-
-First, run the development server:
+1. 以下のコマンドを順に実行してください
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+docker-compose up -d
+npm install
+docker-compose exec app npx prisma migrate dev
+docker-compose exec app npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. http://localhost:3000 にアクセスしてください
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+※特にサーバーサイド・DB まわりのコマンドは docker 上で実行しないと正しく動作しないので注意してください
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## API の動作テスト用 curl コマンド
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### GET 系
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+ブラウザで URL を叩いてください
 
-## Learn More
+- 全件取得: http://localhost:3000/api/todo
+- 一件取得: http://localhost:3000/api/todo/1
 
-To learn more about Next.js, take a look at the following resources:
+### GET 以外
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+terminal から curl コマンドを叩いてください。
+data の中身や URL の id 部分を変えることでリクエストの内容を変更できます
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+# CREATE
+curl -XPOST -H "Content-type: application/json" -d '{"value": "POST TEST"}' 'http://localhost:3000/api/todo'
 
-## Deploy on Vercel
+ # UPDATE
+curl -XPUT -H "Content-type: application/json" -d '{"value": "UPDATE TEST", "status": "DONE"}' 'http://localhost:3000/api/todo/1'
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+ # DELETE
+curl -XDELETE 'http://localhost:3000/api/todo/1'
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## DB を GUI で確認・CRUD 操作したい時
+
+terminal で以下コマンドを実行し、 http://localhost:5555 にアクセスしてください
+
+```bash
+docker-compose exec app npx prisma studio
+```
