@@ -23,7 +23,6 @@ export default async function handler(
     GetResponseData | PutResponseData | DeleteResponseData | ErrorResponse
   >
 ) {
-  console.log(req);
   const {
     query: { id },
     method,
