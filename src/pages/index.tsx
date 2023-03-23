@@ -78,7 +78,7 @@ const Index: NextPage = () => {
           value: todoText,
         })
         .then((res: AxiosResponse<{ task: Task }>) => {
-          setAllTaskList([...allTaskList, res.data.task]);
+          setAllTaskList([res.data.task, ...allTaskList]);
           setTodoText("");
         })
         .catch((err: AxiosError<{ error: string }>) => {
