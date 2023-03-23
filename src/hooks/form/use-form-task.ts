@@ -82,6 +82,7 @@ export const useFormTask = () => {
   };
 
   const onClickEditButton = (editTask: Task) => {
+    document.getElementById("taskTextArea")?.focus();
     setTodoText(editTask.value);
     setEditTaskId(editTask.id);
   };

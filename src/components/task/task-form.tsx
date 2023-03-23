@@ -16,6 +16,7 @@ export const TaskForm = ({
   return (
     <form onSubmit={onSubmitTask} className={styles.form_container}>
       <input
+        id={"taskTextArea"}
         className={styles.input}
         type={"text"}
         placeholder={"今日は何をしますか...?"}
