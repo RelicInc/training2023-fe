@@ -11,7 +11,8 @@ const Index: NextPage = () => {
     editTaskId,
     handleChangeTask,
     updateTaskStatus,
-    onSubmitTask,
+    onSubmitPostTask,
+    onSubmitEditTask,
     onClickEditButton,
     onClickDeleteButton,
   } = useFormTask();
@@ -21,7 +22,8 @@ const Index: NextPage = () => {
       <h1 className={styles.heading}>React研修：TODOアプリ</h1>
       <div className={styles.container}>
         <TaskForm
-          onSubmitTask={onSubmitTask}
+          onSubmitPostTask={onSubmitPostTask}
+          onSubmitEditTask={onSubmitEditTask}
           handleChangeTask={handleChangeTask}
           todoText={todoText}
           editTaskId={editTaskId}

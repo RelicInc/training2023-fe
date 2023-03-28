@@ -1,22 +1,28 @@
 import styles from "@/styles/Home.module.css";
 
 type TaskFormPropsType = {
-  onSubmitTask: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  onSubmitPostTask: (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<void>;
+  onSubmitEditTask: (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<void>;
   handleChangeTask: (event: React.ChangeEvent<HTMLInputElement>) => void;
   todoText: string;
   editTaskId: number | undefined;
 };
 
 export const TaskForm = ({
-  onSubmitTask,
+  onSubmitPostTask,
+  onSubmitEditTask,
   handleChangeTask,
   todoText,
   editTaskId,
 }: TaskFormPropsType) => {
   return (
-    <form onSubmit={onSubmitTask} className={styles.form_container}>
+    <form className={styles.form_container}>
       <input
-        id={"taskTextArea"}
+        id={"task-input-area"}
         className={styles.input}
         type={"text"}
         placeholder={"今日は何をしますか...?"}
@@ -27,6 +33,9 @@ export const TaskForm = ({
         type={"submit"}
         disabled={todoText ? false : true}
         className={styles.submit_btn}
+        onClick={(e) => {
+          editTaskId ? onSubmitEditTask(e) : onSubmitPostTask(e);
+        }}
       >
         {editTaskId ? "編集" : "作成"}
       </button>

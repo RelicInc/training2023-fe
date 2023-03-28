@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse, isAxiosError } from "axios";
 import { Task } from "@prisma/client";
 
 export const useFormTask = () => {
@@ -8,15 +8,16 @@ export const useFormTask = () => {
   const [editTaskId, setEditTaskId] = useState<number>();
 
   const getAllTasks = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo`)
-      .then((res: AxiosResponse<{ tasks: Task[] }>) => {
-        const { data } = res;
-        setAllTaskList(data.tasks);
-      })
-      .catch((err: AxiosError<{ error: string }>) => {
-        console.log(err.message);
-      });
+    try {
+      const { data }: AxiosResponse<{ tasks: Task[] }> = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo`
+      );
+      setAllTaskList(data.tasks);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.error(err.message);
+      }
+    }
   };
 
   const handleChangeTask = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,74 +29,88 @@ export const useFormTask = () => {
     const tempAllTaskList = [...allTaskList];
     const updateTaskIndex = tempAllTaskList.findIndex((t) => t.id === id);
 
-    await axios
-      .put(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo` + "/" + id, {
-        status:
-          tempAllTaskList[updateTaskIndex].status === "DONE" ? "TODO" : "DONE",
-      })
-      .then((res: AxiosResponse<{ task: Task }>) => {
-        tempAllTaskList[updateTaskIndex] = res.data.task;
-        setAllTaskList(tempAllTaskList);
-      })
-      .catch((err: AxiosError<{ error: string }>) => {
-        console.log(err.message);
-      });
+    try {
+      const { data }: AxiosResponse<{ task: Task }> = await axios.put(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo` + "/" + id,
+        {
+          status:
+            tempAllTaskList[updateTaskIndex].status === "DONE"
+              ? "TODO"
+              : "DONE",
+        }
+      );
+      tempAllTaskList[updateTaskIndex] = data.task;
+      setAllTaskList(tempAllTaskList);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.error(err.message);
+      }
+    }
   };
 
-  const onSubmitTask = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitEditTask = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
-
-    if (editTaskId) {
-      const tempAllTaskList = [...allTaskList];
-      const updateTaskIndex = tempAllTaskList.findIndex(
-        (t) => t.id === editTaskId
-      );
-      await axios
-        .put(
-          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo` + "/" + editTaskId,
-          {
-            value: todoText,
-          }
-        )
-        .then((res: AxiosResponse<{ task: Task }>) => {
-          tempAllTaskList[updateTaskIndex] = res.data.task;
-          setAllTaskList(tempAllTaskList);
-          setTodoText("");
-          setEditTaskId(undefined);
-        })
-        .catch((err: AxiosError<{ error: string }>) => {
-          console.log(err.message);
-        });
-    } else {
-      await axios
-        .post(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo`, {
+    const tempAllTaskList = [...allTaskList];
+    const updateTaskIndex = tempAllTaskList.findIndex(
+      (t) => t.id === editTaskId
+    );
+    try {
+      const { data }: AxiosResponse<{ task: Task }> = await axios.put(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo` + "/" + editTaskId,
+        {
           value: todoText,
-        })
-        .then((res: AxiosResponse<{ task: Task }>) => {
-          setAllTaskList([res.data.task, ...allTaskList]);
-          setTodoText("");
-        })
-        .catch((err: AxiosError<{ error: string }>) => {
-          console.log(err.message);
-        });
+        }
+      );
+      tempAllTaskList[updateTaskIndex] = data.task;
+      setAllTaskList(tempAllTaskList);
+      setTodoText("");
+      setEditTaskId(undefined);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.error(err.message);
+      }
+    }
+  };
+
+  const onSubmitPostTask = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    try {
+      const { data }: AxiosResponse<{ task: Task }> = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo`,
+        {
+          value: todoText,
+        }
+      );
+      setAllTaskList([data.task, ...allTaskList]);
+      setTodoText("");
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.error(err.message);
+      }
     }
   };
 
   const onClickEditButton = (editTask: Task) => {
-    document.getElementById("taskTextArea")?.focus();
+    document.getElementById("task-input-area")?.focus();
     setTodoText(editTask.value);
     setEditTaskId(editTask.id);
   };
 
   const onClickDeleteButton = async (id: number) => {
-    await axios
-      .delete(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo` + "/" + id)
-      .then(() => {
-        setAllTaskList((prev) => prev.filter((task) => task.id !== id));
-      })
-      .catch((err: AxiosError<{ error: string }>) => {
-        console.log(err);
-      });
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo` + "/" + id
+      );
+      setAllTaskList((prev) => prev.filter((task) => task.id !== id));
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.error(err.message);
+      }
+    }
   };
 
   useEffect(() => {
@@ -109,7 +124,8 @@ export const useFormTask = () => {
     editTaskId,
     handleChangeTask,
     updateTaskStatus,
-    onSubmitTask,
+    onSubmitPostTask,
+    onSubmitEditTask,
     onClickEditButton,
     onClickDeleteButton,
   };
