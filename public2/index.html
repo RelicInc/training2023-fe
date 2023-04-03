@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" id="hcb-style-css" href="../src//styles/globals.css" type="text/css" media="all">
+</head>
+
+<body>
+  <main>
+    <h1>DOM操作研修：TODOアプリ</h1>
+    <div>
+      <form id="todo-form" class="styles.form_container">
+        <input name="task_input_area" type="text" placeholder="今日は何をしますか...?" id="todo-register-field"
+          class="styles.input" />
+        <button type="submit" disabled id="submit-button" class="styles.submit_btn" data-submit-mod="post">
+          作成
+        </button>
+      </form>
+      <ul id="task-list"></ul>
+      <h2 id="empty-placeholder" class="styles.no_task">予定はないようです。</h2>
+    </div>
+  </main>
+  <script defer src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <script defer src="script.js"></script>
+</body>
+
+</html>
