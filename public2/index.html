@@ -15,31 +15,29 @@
   </head>
 
   <body>
-    <main>
-      <h1>DOM操作研修：TODOアプリ</h1>
-      <div>
-        <form id="todo-form" class="styles.form_container">
+    <main class="main">
+      <h1 class="heading">DOM操作研修：TODOアプリ</h1>
+      <div class="container">
+        <form id="todo-form" class="form_container">
           <input
             name="task_input_area"
             type="text"
             placeholder="今日は何をしますか...?"
             id="todo-register-field"
-            class="styles.input"
+            class="input"
           />
           <button
             type="submit"
             disabled
             id="submit-button"
-            class="styles.submit_btn"
+            class="submit_btn"
             data-submit-mod="post"
           >
             作成
           </button>
         </form>
-        <ul id="task-list"></ul>
-        <h2 id="empty-placeholder" class="styles.no_task">
-          予定はないようです。
-        </h2>
+        <ul id="task-list" class="task_ui"></ul>
+        <h2 id="empty-placeholder" class="no_task">予定はないようです。</h2>
       </div>
     </main>
     <script
