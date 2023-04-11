@@ -1,7 +1,7 @@
-import styles from "@/styles/Home.module.css";
-import { FiEdit2 } from "react-icons/fi";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { Task } from "@prisma/client";
+import styles from '@/styles/Home.module.css';
+import { FiEdit2 } from 'react-icons/fi';
+import { FaRegTrashAlt } from 'react-icons/fa';
+import { Task } from '@prisma/client';
 
 type TaskContentsPropsType = {
   allTaskList: Task[];
@@ -12,7 +12,6 @@ type TaskContentsPropsType = {
 
 export const TaskContents = ({
   allTaskList,
-  updateTaskStatus,
   onClickEditButton,
   onClickDeleteButton,
 }: TaskContentsPropsType) => {
@@ -22,33 +21,35 @@ export const TaskContents = ({
         <div
           key={task.id}
           className={
-            task.status === "DONE"
-              ? styles.task_container + " " + styles.done_task_container
+            task.status === 'DONE'
+              ? styles.task_container + ' ' + styles.done_task_container
               : styles.task_container
           }
         >
           <input
-            type={"checkbox"}
+            type={'checkbox'}
             className={styles.check_box}
-            checked={task.status === "DONE" ? true : false}
-            onChange={() => updateTaskStatus(task.id)}
+            checked={task.status === 'DONE' ? true : false}
+            onChange={() => console.log('UPDATE!')}
           />
           <p
             className={
-              task.status === "DONE"
-                ? styles.task_text + " " + styles.line_through
+              task.status === 'DONE'
+                ? styles.task_text + ' ' + styles.line_through
                 : styles.task_text
             }
           >
             {task.value}
           </p>
           <button
+            type="button"
             className={styles.edit_task}
             onClick={() => onClickEditButton(task)}
           >
             <FiEdit2 />
           </button>
           <button
+            type="button"
             className={styles.remove_task}
             onClick={() => onClickDeleteButton(task.id)}
           >
