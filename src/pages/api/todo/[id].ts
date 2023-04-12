@@ -53,12 +53,7 @@ export default async function handler(
         where: { id: +id },
         data: req.body,
       });
-      return res
-        .status(200)
-        .setHeader("Access-Control-Allow-Origin", "*")  // Swagger でレスポンスを受け取る場合に必要
-        .setHeader("Access-Control-Allow-Methods", "*") // Swagger でレスポンスを受け取る場合に必要
-        .setHeader("Access-Control-Allow-Headers", "*") // Swagger でレスポンスを受け取る場合に必要
-        .json({ task });
+      return res.status(200).json({ task });
     }
     case 'DELETE': {
       const task = await prisma.task.delete({ where: { id: +id } });
