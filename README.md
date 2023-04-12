@@ -9,7 +9,7 @@ docker-compose exec app npx prisma migrate dev
 docker-compose exec app npm run dev
 ```
 
-2. http://localhost:3000 にアクセスしてください
+2. http://localhost:3002 にアクセスしてください
 
 ※特にサーバーサイド・DB まわりのコマンドは docker 上で実行しないと正しく動作しないので注意してください
 
@@ -19,8 +19,8 @@ docker-compose exec app npm run dev
 
 ブラウザで URL を叩いてください
 
-- 全件取得: http://localhost:3000/api/todo
-- 一件取得: http://localhost:3000/api/todo/1
+- 全件取得: http://localhost:3002/api/todo
+- 一件取得: http://localhost:3002/api/todo/1
 
 ### GET 以外
 
@@ -29,13 +29,13 @@ data の中身や URL の id 部分を変えることでリクエストの内容
 
 ```bash
 # CREATE
-curl -XPOST -H "Content-type: application/json" -d '{"value": "POST TEST"}' 'http://localhost:3000/api/todo'
+curl -XPOST -H "Content-type: application/json" -d '{"value": "POST TEST"}' 'http://localhost:3002/api/todo'
 
  # UPDATE
-curl -XPUT -H "Content-type: application/json" -d '{"value": "UPDATE TEST", "status": "DONE"}' 'http://localhost:3000/api/todo/1'
+curl -XPUT -H "Content-type: application/json" -d '{"value": "UPDATE TEST", "status": "DONE"}' 'http://localhost:3002/api/todo/1'
 
  # DELETE
-curl -XDELETE 'http://localhost:3000/api/todo/1'
+curl -XDELETE 'http://localhost:3002/api/todo/1'
 ```
 
 ## DB を GUI で確認・CRUD 操作したい時
@@ -45,3 +45,7 @@ terminal で以下コマンドを実行し、 http://localhost:5555 にアクセ
 ```bash
 docker-compose exec app npx prisma studio
 ```
+
+## Swagger 
+
+http://localhost:8080/ にアクセスしてください。

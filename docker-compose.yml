@@ -4,8 +4,8 @@ services:
   app:
     image: node:18.13.0
     ports:
-      - 3002:3002 # Next.js用。左の3000の数字は任意のPORT番号に変更可能。立ち上げている他のプロセスと被る場合は変更してください
-      - 5555:5555 # Prisma Studio用。DBのCRUDをGUIで行いたいときに使ってください
+      - "127.0.0.1:3002:3002" # Next.js用。左の3000の数字は任意のPORT番号に変更可能。立ち上げている他のプロセスと被る場合は変更してください
+      - "127.0.0.1:5555:5555" # Prisma Studio用。DBのCRUDをGUIで行いたいときに使ってください
     working_dir: /todo-app
     volumes:
       - .:/todo-app
@@ -17,13 +17,22 @@ services:
   postgresql:
     image: postgres:15
     ports:
-      - 5432:5432
+      - "127.0.0.1:5432:5432"
     volumes:
       - db-store:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: passw0rd
       POSTGRES_DB: mydb
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./openapi:/usr/share/nginx/html/openapi/
+    environment:
+      API_URL: ./openapi/default.yml
+
 
 volumes:
   db-store:
