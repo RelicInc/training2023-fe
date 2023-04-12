@@ -1,6 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { Task } from "@prisma/client";
-import { useFormTask } from "@/hooks/form";
+import { postTask } from "@/utils";
 import styles from "@/styles/Home.module.css";
 
 type TaskFormPropsType = {
@@ -12,10 +12,23 @@ export const TaskForm = ({
   allTaskList,
   setAllTaskList,
 }: TaskFormPropsType) => {
-  const { todoText, handleChangeTask, onSubmitPostTask } = useFormTask({
-    allTaskList,
-    setAllTaskList,
-  });
+  const [todoText, setTodoText] = useState("");
+
+  const handleChangeTask = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTodoText(event.currentTarget.value);
+  };
+
+  const onSubmitPostTask = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    const data = await postTask(todoText);
+    if (data) {
+      setAllTaskList([data.task, ...allTaskList]);
+      setTodoText("");
+    }
+  };
+
   return (
     <form className={styles.form_container}>
       <input
