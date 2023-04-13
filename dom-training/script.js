@@ -4,9 +4,13 @@ const submitButton = document.getElementById("submit-button");
 const taskList = document.getElementById("task-list");
 const emptyPlaceholder = document.getElementById("empty-placeholder");
 
+// submitイベント時に処理を実行する関数を割り当てる
 form.addEventListener("submit", onSubmitPostTask);
+
 registerField.addEventListener("input", switchSubmitButtonDisability);
+
 getInitialTasks().then(function (data) {
+  // 取得したTODOのdataを画面に表示する処理を実行
   data.reverse().forEach(function (task) {
     addNewTask(task.id, task.value);
   });
@@ -44,7 +48,6 @@ function switchSubmitButtonDisability(event) {
 /**
  * onSubmitPostTask()で呼び出される関数
  */
-
 function addNewTask(taskId, taskName) {
   const newTask = createTaskRow(taskId, taskName);
   taskList.appendChild(newTask);
@@ -53,6 +56,9 @@ function addNewTask(taskId, taskName) {
   }
 }
 
+/**
+ * TODO要素を作成する関数
+ */
 function createTaskRow(taskId, taskName) {
   const taskListItem = document.createElement("li");
   taskListItem.setAttribute("id", taskId);
@@ -68,8 +74,6 @@ function createTaskRow(taskId, taskName) {
 /**
  * createTaskRow()で呼び出される関数群
  */
-
-// function createTaskCheckbox(taskId, taskName) {
 function createTaskCheckbox(taskId) {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -77,14 +81,6 @@ function createTaskCheckbox(taskId) {
   checkbox.addEventListener("change", function () {
     updateTaskStatus(taskId);
   });
-
-  // const label = document.createElement("label");
-  // const todoText = document.createElement("p");
-
-  // todoText.innerHTML = `
-  //     <div className="task_text">${taskName}</div>
-  // `;
-  // label.prepend(checkbox);
   return checkbox;
 }
 function cerateTaskText(taskName) {
@@ -116,7 +112,9 @@ function createDeleteButton(taskId) {
   return button;
 }
 
-//NOTE: 全権取得
+/**
+ * 全てのTODOを取得
+ */
 async function getInitialTasks() {
   try {
     const { data } = await axios.get(`http://localhost:3002/api/todo`);
@@ -125,17 +123,6 @@ async function getInitialTasks() {
     if (axios.isAxiosError(err)) {
       console.error(err.message);
     }
-    console.error(err);
-  }
-}
-
-//NOTE: 削除
-async function onClickDeleteButton(taskId) {
-  const deleteTask = document.getElementById(taskId);
-  try {
-    await axios.delete(`http://localhost:3002/api/todo/${taskId}`);
-    deleteTask.remove();
-  } catch (err) {
     console.error(err);
   }
 }
