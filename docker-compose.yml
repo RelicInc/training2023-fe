@@ -1,10 +1,10 @@
-version: '3.7'
+version: "3.7"
 
 services:
   app:
     image: node:18.13.0
     ports:
-      - 3000:3000 # Next.js用。左の3000の数字は任意のPORT番号に変更可能。立ち上げている他のプロセスと被る場合は変更してください
+      - 3002:3002 # Next.js用。左の3000の数字は任意のPORT番号に変更可能。立ち上げている他のプロセスと被る場合は変更してください
       - 5555:5555 # Prisma Studio用。DBのCRUDをGUIで行いたいときに使ってください
     working_dir: /todo-app
     volumes:
