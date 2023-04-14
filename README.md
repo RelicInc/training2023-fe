@@ -45,3 +45,7 @@ terminal で以下コマンドを実行し、 http://localhost:5555 にアクセ
 ```bash
 docker-compose exec app npx prisma studio
 ```
+
+## Swagger
+
+http://localhost:8080/ にアクセスしてください。
