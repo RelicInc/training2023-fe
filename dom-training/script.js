@@ -1,13 +1,5 @@
-const form = document.getElementById("todo-form");
 const taskList = document.getElementById("task-list");
 const emptyPlaceholder = document.getElementById("empty-placeholder");
-
-getInitialTasks().then(function (data) {
-  // 取得したTODOのdataを画面に表示する処理を実行
-  data.reverse().forEach(function (task) {
-    addNewTask(task.id, task.value);
-  });
-});
 
 /**
  * ul要素に取得したTODOを追加する
@@ -80,13 +72,9 @@ function createDeleteButton(taskId) {
  * 全てのTODOを取得
  */
 async function getInitialTasks() {
-  try {
-    const { data } = await axios.get(`http://localhost:3002/api/todo`);
-    return data.tasks;
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      console.error(err.message);
-    }
-    console.error(err);
-  }
+  // GET APIを叩き取得したdataを返却する処理
 }
+
+/**
+ * getInitialTasksを実行し、取得したTODO要素ををDOMに追加する
+ */
