@@ -1,22 +1,18 @@
 import { Task } from '@prisma/client';
-import { useState } from 'react';
 
 type TaskListItemPropsType = {
   task: Task;
 };
 
 const TaskListItem = ({ task }: TaskListItemPropsType) => {
-  const [completed, setCompleted] = useState(false);
   return (
     <li className="task_li">
       <input
         type="checkbox"
         className="check_box"
-        value={`${completed}`}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setCompleted((completed) => !completed);
           console.log(`id: ${task.id}`);
-          console.log(`完了: ${event.target.value}`);
+          console.log(`完了: ${event.target.checked}`);
         }}
       />
       <div className="task_text">{task.value}</div>
