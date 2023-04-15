@@ -24,7 +24,7 @@ const Index: NextPage = () => {
       <TaskForm allTaskList={allTaskList} setAllTaskList={setAllTaskList} />
       <TaskList allTaskList={allTaskList} />
       {allTaskList.length === 0 && (
-        <h2 className="no_task">予定はないようです。</h2>
+        <div className="no_task">予定はないようです。</div>
       )}
     </Layout>
   );

@@ -13,13 +13,11 @@ export const TaskForm = ({
 }: TaskFormPropsType) => {
   const [todoText, setTodoText] = useState('');
 
-  const handleChangeTask = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeTodoText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTodoText(event.currentTarget.value);
   };
 
-  const onSubmitcreateTask = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = await createTask(todoText);
     if (data) {
@@ -29,23 +27,16 @@ export const TaskForm = ({
   };
 
   return (
-    <form className="form_container">
+    <form className="form_container" onSubmit={onSubmit}>
       <input
         id="task-input-area"
         className="input"
         type="text"
         placeholder="今日は何をしますか...?"
         value={todoText}
-        onChange={(e) => handleChangeTask(e)}
+        onChange={onChangeTodoText}
       />
-      <button
-        type="submit"
-        className="submit_btn"
-        disabled={!todoText}
-        onClick={(e) => {
-          onSubmitcreateTask(e);
-        }}
-      >
+      <button type="submit" className="submit_btn" disabled={!todoText}>
         作成
       </button>
     </form>
