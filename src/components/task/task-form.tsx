@@ -1,7 +1,6 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import { Task } from "@prisma/client";
-import { postTask } from "@/utils";
-import styles from "@/styles/Home.module.css";
+import { useState, Dispatch, SetStateAction } from 'react';
+import { Task } from '@prisma/client';
+import { postTask } from '@/utils';
 
 type TaskFormPropsType = {
   allTaskList: Task[];
@@ -12,7 +11,7 @@ export const TaskForm = ({
   allTaskList,
   setAllTaskList,
 }: TaskFormPropsType) => {
-  const [todoText, setTodoText] = useState("");
+  const [todoText, setTodoText] = useState('');
 
   const handleChangeTask = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTodoText(event.currentTarget.value);
@@ -25,24 +24,24 @@ export const TaskForm = ({
     const data = await postTask(todoText);
     if (data) {
       setAllTaskList([data.task, ...allTaskList]);
-      setTodoText("");
+      setTodoText('');
     }
   };
 
   return (
-    <form className={styles.form_container}>
+    <form className="form_container">
       <input
-        id={"task-input-area"}
-        className={styles.input}
-        type={"text"}
-        placeholder={"今日は何をしますか...?"}
+        id={'task-input-area'}
+        className="input"
+        type={'text'}
+        placeholder={'今日は何をしますか...?'}
         onChange={(e) => handleChangeTask(e)}
         value={todoText}
       />
       <button
-        type={"submit"}
+        type={'submit'}
         disabled={todoText ? false : true}
-        className={styles.submit_btn}
+        className="submit_btn"
         onClick={(e) => {
           onSubmitPostTask(e);
         }}
