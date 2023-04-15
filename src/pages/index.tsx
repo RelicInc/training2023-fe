@@ -7,8 +7,27 @@ type Task = {
   status: 'TODO' | 'DONE';
 };
 
+const allTaskList: Task[] = [
+  {
+    id: 1,
+    value: '本を読む',
+    status: 'TODO',
+  },
+  /**
+  {
+    id: 2,
+    value: 'メールを送る',
+    status: 'TODO',
+  },
+  {
+    id: 3,
+    value: '役所に行く',
+    status: 'TODO',
+  },
+   */
+];
+
 const Index: NextPage = () => {
-  const [allTaskList, setAllTaskList] = useState<Task[]>([]);
   const [todoText, setTodoText] = useState('');
 
   const onChangeTodoText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,12 +36,7 @@ const Index: NextPage = () => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const newTask: Task = {
-      id: (allTaskList[0]?.id ?? 0) + 1,
-      value: todoText,
-      status: 'TODO',
-    };
-    setAllTaskList([newTask, ...allTaskList]);
+    console.log(`Task「${todoText}」が追加されました`);
     setTodoText('');
   };
 
@@ -44,33 +58,33 @@ const Index: NextPage = () => {
           </button>
         </form>
         <ul className="task_ui">
-          {allTaskList.map((task) => (
-            <li key={task.id} className="task_li">
+          {allTaskList.length > 0 && (
+            <li key={allTaskList[0].id} className="task_li">
               <input
                 type="checkbox"
                 className="check_box"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  console.log(`id: ${task.id}`);
+                  console.log(`id: ${allTaskList[0].id}`);
                   console.log(`完了: ${event.target.checked}`);
                 }}
               />
-              <div className="task_text">{task.value}</div>
+              <div className="task_text">{allTaskList[0].value}</div>
               <button
                 type="button"
                 className="edit_task"
-                onClick={() => console.log(`編集：${task.id}`)}
+                onClick={() => console.log(`編集：${allTaskList[0].id}`)}
               >
                 編集
               </button>
               <button
                 type="button"
                 className="remove_task"
-                onClick={() => console.log(`削除：${task.id}`)}
+                onClick={() => console.log(`削除：${allTaskList[0].id}`)}
               >
                 削除
               </button>
             </li>
-          ))}
+          )}
         </ul>
         {allTaskList.length === 0 && (
           <div className="no_task">予定はないようです。</div>
