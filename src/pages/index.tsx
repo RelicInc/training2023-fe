@@ -1,7 +1,11 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
-import { Task } from '@prisma/client';
-import { createTask } from '@/utils/create-task';
+
+type Task = {
+  id: number;
+  value: string;
+  status: 'TODO' | 'DONE';
+};
 
 const Index: NextPage = () => {
   const [allTaskList, setAllTaskList] = useState<Task[]>([]);
@@ -13,11 +17,13 @@ const Index: NextPage = () => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = await createTask(todoText);
-    if (data) {
-      setAllTaskList([data.task, ...allTaskList]);
-      setTodoText('');
-    }
+    const newTask: Task = {
+      id: (allTaskList[0]?.id ?? 0) + 1,
+      value: todoText,
+      status: 'TODO',
+    };
+    setAllTaskList([newTask, ...allTaskList]);
+    setTodoText('');
   };
 
   return (
