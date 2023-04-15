@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import { getAllTasks } from '@/utils/get-all-tasks';
+import { useState } from 'react';
 import { Task } from '@prisma/client';
 import { createTask } from '@/utils/create-task';
 
@@ -21,16 +20,6 @@ const Index: NextPage = () => {
     }
   };
 
-  const initializeTaskList = async () => {
-    const data = await getAllTasks();
-    if (data) {
-      setAllTaskList(data.tasks);
-    }
-  };
-
-  useEffect(() => {
-    initializeTaskList();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <main className="main">
       <h1 className="heading">React研修：TODOアプリ</h1>
