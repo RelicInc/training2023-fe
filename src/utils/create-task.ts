@@ -1,10 +1,10 @@
-import axios, { AxiosResponse, isAxiosError } from "axios";
-import { Task } from "@prisma/client";
+import axios, { AxiosResponse, isAxiosError } from 'axios';
+import { Task } from '@prisma/client';
 
-export const postTask = async (todoText: string) => {
+export const createTask = async (todoText: string) => {
   try {
     const { data }: AxiosResponse<{ task: Task }> = await axios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/todo`,
+      'http://localhost:3002/api/todo',
       {
         value: todoText,
       }

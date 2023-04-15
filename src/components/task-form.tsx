@@ -1,6 +1,6 @@
 import { useState, Dispatch, SetStateAction } from 'react';
 import { Task } from '@prisma/client';
-import { postTask } from '@/utils';
+import { createTask } from '@/utils/create-task';
 
 type TaskFormPropsType = {
   allTaskList: Task[];
@@ -17,11 +17,11 @@ export const TaskForm = ({
     setTodoText(event.currentTarget.value);
   };
 
-  const onSubmitPostTask = async (
+  const onSubmitcreateTask = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
-    const data = await postTask(todoText);
+    const data = await createTask(todoText);
     if (data) {
       setAllTaskList([data.task, ...allTaskList]);
       setTodoText('');
@@ -31,19 +31,19 @@ export const TaskForm = ({
   return (
     <form className="form_container">
       <input
-        id={'task-input-area'}
+        id="task-input-area"
         className="input"
-        type={'text'}
-        placeholder={'今日は何をしますか...?'}
-        onChange={(e) => handleChangeTask(e)}
+        type="text"
+        placeholder="今日は何をしますか...?"
         value={todoText}
+        onChange={(e) => handleChangeTask(e)}
       />
       <button
-        type={'submit'}
-        disabled={todoText ? false : true}
+        type="submit"
         className="submit_btn"
+        disabled={!todoText}
         onClick={(e) => {
-          onSubmitPostTask(e);
+          onSubmitcreateTask(e);
         }}
       >
         作成
