@@ -1,3 +1,37 @@
+/**
+ *  step2 要素を取得しよう
+ *  esaのコードをコピペしてください
+ */
+const form = document.getElementById("todo-form");
+
+/**
+ *  step2 要素を取得しよう
+ *  1. id="app-title"の要素を取得してください
+ *  2. 1で取得した要素に対して、`textContent プロパティ`を使用してテキストを好きに変更してみてください
+ */
+const appTitle = document.getElementById("app-title");
+appTitle.textContent = "DOMの研修中です。";
+
+/**
+ * step3 GETリクエストでDBからデータを取得しよう
+ * http://localhost:3002/api/todoを叩きデータを取得してください
+ */
+async function getInitialTasks() {
+  // GET APIを叩き取得したdataを返却する処理
+  try {
+    const { data } = await axios.get(`http://localhost:3002/api/todo`);
+    console.log(data);
+    return data.tasks;
+  } catch (err) {
+    console.error(err);
+  }
+}
+getInitialTasks();
+
+/**
+ * getInitialTasksを実行し、取得したTODO要素ををDOMに追加する
+ */
+
 const taskList = document.getElementById("task-list");
 const emptyPlaceholder = document.getElementById("empty-placeholder");
 
@@ -49,10 +83,10 @@ function cerateTaskText(taskName) {
 function createEditButton(taskId, taskName) {
   const button = document.createElement("button");
   button.innerText = "編集";
-  button.type = "button";
   button.classList.add("edit_task");
   button.addEventListener("click", function () {
     onClickEditButton(taskId, taskName);
+    button.type = "button";
   });
   return button;
 }
@@ -67,14 +101,3 @@ function createDeleteButton(taskId) {
   });
   return button;
 }
-
-/**
- * 全てのTODOを取得
- */
-async function getInitialTasks() {
-  // GET APIを叩き取得したdataを返却する処理
-}
-
-/**
- * getInitialTasksを実行し、取得したTODO要素ををDOMに追加する
- */
