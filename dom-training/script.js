@@ -1,3 +1,5 @@
+// --- GETリクエストでデータを取得し、画面にTODOを表示する ---
+
 /**
  *  step2 要素を取得しよう
  *  esaのコードをコピペしてください
@@ -48,17 +50,13 @@ function addNewTask(taskId, taskName) {
   }
 }
 
-async function displayTask() {
-  try {
-    const tasks = await getInitialTasks();
-    tasks.reverse().forEach(function (task) {
-      addNewTask(task.id, task.value);
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
-displayTask();
+getInitialTasks().then(function (data) {
+  // 取得したTODOのdataを画面に表示する処理を実行
+  data.reverse().forEach(function (task) {
+    addNewTask(task.id, task.value);
+  });
+});
+// ----
 
 /**
  * TODO要素を作成する関数
