@@ -2,63 +2,31 @@
  *  step2 要素を取得しよう
  *  esaのコードをコピペしてください
  */
-const form = document.getElementById("todo-form");
 
 /**
  *  step2 要素を取得しよう
  *  1. id="app-title"の要素を取得してください
  */
-const appTitle = document.getElementById("app-title");
+
 /**
  *  step2 要素を取得しよう
  *  2. 1で取得した要素に対して、`textContent プロパティ`を使用してテキストを好きに変更してみてください
  */
-appTitle.textContent = "DOMの研修中です。";
 
 /**
  *  step3 GETリクエストでDBからデータを取得しよう
  *  http://localhost:3002/api/todoを叩きデータを取得してください
  */
-async function getInitialTasks() {
-  // GET APIを叩き取得したdataを返却する処理
-  try {
-    const { data } = await axios.get(`http://localhost:3002/api/todo`);
-    return data.tasks;
-  } catch (err) {
-    console.error(err);
-  }
-}
 
 /**
  *  step4 取得したデータを画面に表示してみよう
  *  1. id = "task-list"の要素 (取得したTODOを追加する要素) を getElementId で取得してみましょう
  */
-const taskList = document.getElementById("task-list");
+
 /**
  *  step4 取得したデータを画面に表示してみよう
  *  2. 画像のようにTODOを表示してみましょう
  */
-const emptyPlaceholder = document.getElementById("empty-placeholder");
-
-function addNewTask(taskId, taskName) {
-  const newTask = createTaskRow(taskId, taskName);
-  taskList.appendChild(newTask);
-  if (emptyPlaceholder) {
-    emptyPlaceholder.remove();
-  }
-}
-
-async function displayTask() {
-  try {
-    const tasks = await getInitialTasks();
-    tasks.reverse().forEach(function (task) {
-      addNewTask(task.id, task.value);
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
-displayTask();
 
 /**
  * TODO要素を作成する関数
