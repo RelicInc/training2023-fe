@@ -37,27 +37,13 @@
 /**
  * step2.「作成」ボタンに submitイベント を割り当てよう
  */
-form.addEventListener("submit", onSubmitPostTask);
+
 /**
  * step3. onSubmitPostTask関数内でPOSTリクエストを実行しTODOを作成しよう
  */
 async function onSubmitPostTask(event) {
-  console.log("event", event);
   event.preventDefault();
-  const taskName = event.target.elements.task_input_area.value;
-
-  try {
-    const { data } = await axios.post(`http://localhost:3002/api/todo`, {
-      value: taskName,
-    });
-    addNewTask(data.task.id, data.task.value);
-    event.target.elements.task_input_area.value = "";
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      console.error(err.message);
-    }
-    console.error(err);
-  }
+  console.log("送信しました。");
 }
 // ----
 
