@@ -1,21 +1,74 @@
+// --- GETリクエストでデータを取得し、画面にTODOを表示する ---
+
+/**
+ *  step2 要素を取得しよう
+ *  esaのコードをコピペしてください
+ */
 const form = document.getElementById("todo-form");
-const registerField = document.getElementById("todo-register-field");
-const submitButton = document.getElementById("submit-button");
+
+/**
+ *  step2 要素を取得しよう
+ *  1. id="app-title"の要素を取得してください
+ */
+const appTitle = document.getElementById("app-title");
+/**
+ *  step2 要素を取得しよう
+ *  2. 1で取得した要素に対して、`textContent プロパティ`を使用してテキストを好きに変更してみてください
+ */
+appTitle.textContent = "DOMの研修中です。";
+
+/**
+ *  step3 GETリクエストでDBからデータを取得しよう
+ *  http://localhost:3002/api/todoを叩きデータを取得してください
+ */
+async function getInitialTasks() {
+  // GET APIを叩き取得したdataを返却する処理
+  try {
+    const { data } = await axios.get(`http://localhost:3002/api/todo`);
+    return data.tasks;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/**
+ *  step4 取得したデータを画面に表示してみよう
+ *  1. id = "task-list"の要素 (取得したTODOを追加する要素) を getElementId で取得してみましょう
+ */
 const taskList = document.getElementById("task-list");
+/**
+ *  step4 取得したデータを画面に表示してみよう
+ *  2. 画像のようにTODOを表示してみましょう
+ */
 const emptyPlaceholder = document.getElementById("empty-placeholder");
 
-form.addEventListener("submit", onSubmitPostTask);
-registerField.addEventListener("input", switchSubmitButtonDisability);
+function addNewTask(taskId, taskName) {
+  const newTask = createTaskRow(taskId, taskName);
+  taskList.appendChild(newTask);
+  if (emptyPlaceholder) {
+    emptyPlaceholder.remove();
+  }
+}
+
 getInitialTasks().then(function (data) {
+  // 取得したTODOのdataを画面に表示する処理を実行
   data.reverse().forEach(function (task) {
     addNewTask(task.id, task.value);
   });
 });
+// ----
+
+// --- POSTリクエストでTODOを作成する ---
 
 /**
- * formに設定するSubmitイベント
+ * step2.「作成」ボタンに submitイベント を割り当てよう
+ */
+form.addEventListener("submit", onSubmitPostTask);
+/**
+ * step3. onSubmitPostTask関数内でPOSTリクエストを実行しTODOを作成しよう
  */
 async function onSubmitPostTask(event) {
+  console.log("event", event);
   event.preventDefault();
   const taskName = event.target.elements.task_input_area.value;
 
@@ -32,27 +85,11 @@ async function onSubmitPostTask(event) {
     console.error(err);
   }
 }
+// ----
 
 /**
- * タスク名の入力フィールドに設定するInputイベント（ReactのonChangeに対応）
- * 送信ボタンのdisabledのつけ外しをする
+ * TODO要素を作成する関数
  */
-function switchSubmitButtonDisability(event) {
-  submitButton.disabled = event.target.value === "";
-}
-
-/**
- * onSubmitPostTask()で呼び出される関数
- */
-
-function addNewTask(taskId, taskName) {
-  const newTask = createTaskRow(taskId, taskName);
-  taskList.appendChild(newTask);
-  if (emptyPlaceholder) {
-    emptyPlaceholder.remove();
-  }
-}
-
 function createTaskRow(taskId, taskName) {
   const taskListItem = document.createElement("li");
   taskListItem.setAttribute("id", taskId);
@@ -68,23 +105,13 @@ function createTaskRow(taskId, taskName) {
 /**
  * createTaskRow()で呼び出される関数群
  */
-
-// function createTaskCheckbox(taskId, taskName) {
 function createTaskCheckbox(taskId) {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.classList.add("check_box");
   checkbox.addEventListener("change", function () {
-    updateTaskStatus(taskId);
+    // checkboxを押した時の処理
   });
-
-  // const label = document.createElement("label");
-  // const todoText = document.createElement("p");
-
-  // todoText.innerHTML = `
-  //     <div className="task_text">${taskName}</div>
-  // `;
-  // label.prepend(checkbox);
   return checkbox;
 }
 function cerateTaskText(taskName) {
@@ -97,10 +124,10 @@ function cerateTaskText(taskName) {
 function createEditButton(taskId, taskName) {
   const button = document.createElement("button");
   button.innerText = "編集";
-  button.type = "button";
   button.classList.add("edit_task");
+  button.type = "button";
   button.addEventListener("click", function () {
-    onClickEditButton(taskId, taskName);
+    // onClickEditButton(taskId, taskName);
   });
   return button;
 }
@@ -111,31 +138,15 @@ function createDeleteButton(taskId) {
   button.type = "button";
   button.classList.add("remove_task");
   button.addEventListener("click", function () {
-    onClickDeleteButton(taskId);
+    // onClickDeleteButton(taskId);
   });
   return button;
 }
 
-//NOTE: 全権取得
-async function getInitialTasks() {
-  try {
-    const { data } = await axios.get(`http://localhost:3002/api/todo`);
-    return data.tasks;
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      console.error(err.message);
-    }
-    console.error(err);
-  }
-}
-
-//NOTE: 削除
-async function onClickDeleteButton(taskId) {
-  const deleteTask = document.getElementById(taskId);
-  try {
-    await axios.delete(`http://localhost:3002/api/todo/${taskId}`);
-    deleteTask.remove();
-  } catch (err) {
-    console.error(err);
-  }
+// inputに値が入るとdisable解除
+const registerField = document.getElementById("todo-register-field");
+const submitButton = document.getElementById("submit-button");
+registerField.addEventListener("input", switchSubmitButtonDisability);
+function switchSubmitButtonDisability(event) {
+  submitButton.disabled = event.target.value === "";
 }
