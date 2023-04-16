@@ -7,37 +7,39 @@ const form = document.getElementById("todo-form");
 /**
  *  step2 要素を取得しよう
  *  1. id="app-title"の要素を取得してください
- *  2. 1で取得した要素に対して、`textContent プロパティ`を使用してテキストを好きに変更してみてください
  */
 const appTitle = document.getElementById("app-title");
+/**
+ *  step2 要素を取得しよう
+ *  2. 1で取得した要素に対して、`textContent プロパティ`を使用してテキストを好きに変更してみてください
+ */
 appTitle.textContent = "DOMの研修中です。";
 
 /**
- * step3 GETリクエストでDBからデータを取得しよう
- * http://localhost:3002/api/todoを叩きデータを取得してください
+ *  step3 GETリクエストでDBからデータを取得しよう
+ *  http://localhost:3002/api/todoを叩きデータを取得してください
  */
 async function getInitialTasks() {
   // GET APIを叩き取得したdataを返却する処理
   try {
     const { data } = await axios.get(`http://localhost:3002/api/todo`);
-    console.log(data);
     return data.tasks;
   } catch (err) {
     console.error(err);
   }
 }
-getInitialTasks();
 
 /**
- * getInitialTasksを実行し、取得したTODO要素ををDOMに追加する
+ *  step4 取得したデータを画面に表示してみよう
+ *  1. id = "task-list"の要素 (取得したTODOを追加する要素) を getElementId で取得してみましょう
  */
-
 const taskList = document.getElementById("task-list");
+/**
+ *  step4 取得したデータを画面に表示してみよう
+ *  2. 画像のようにTODOを表示してみましょう
+ */
 const emptyPlaceholder = document.getElementById("empty-placeholder");
 
-/**
- * ul要素に取得したTODOを追加する
- */
 function addNewTask(taskId, taskName) {
   const newTask = createTaskRow(taskId, taskName);
   taskList.appendChild(newTask);
@@ -45,6 +47,18 @@ function addNewTask(taskId, taskName) {
     emptyPlaceholder.remove();
   }
 }
+
+async function displayTask() {
+  try {
+    const tasks = await getInitialTasks();
+    tasks.reverse().forEach(function (task) {
+      addNewTask(task.id, task.value);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+displayTask();
 
 /**
  * TODO要素を作成する関数
@@ -69,7 +83,7 @@ function createTaskCheckbox(taskId) {
   checkbox.type = "checkbox";
   checkbox.classList.add("check_box");
   checkbox.addEventListener("change", function () {
-    updateTaskStatus(taskId);
+    // checkboxを押した時の処理
   });
   return checkbox;
 }
@@ -84,9 +98,9 @@ function createEditButton(taskId, taskName) {
   const button = document.createElement("button");
   button.innerText = "編集";
   button.classList.add("edit_task");
+  button.type = "button";
   button.addEventListener("click", function () {
-    onClickEditButton(taskId, taskName);
-    button.type = "button";
+    // onClickEditButton(taskId, taskName);
   });
   return button;
 }
@@ -97,7 +111,7 @@ function createDeleteButton(taskId) {
   button.type = "button";
   button.classList.add("remove_task");
   button.addEventListener("click", function () {
-    onClickDeleteButton(taskId);
+    // onClickDeleteButton(taskId);
   });
   return button;
 }
