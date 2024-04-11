@@ -19,6 +19,10 @@
  *  step3 GETリクエストでDBからデータを取得しよう
  *  http://localhost:3002/api/todoを叩きデータを取得してください
  */
+async function getInitialTasks() {
+  // GET APIを叩き取得したdataを返却する処理
+  console.log("step:3 API叩きたい");
+}
 
 /**
  *  step4 取得したデータを画面に表示してみよう
@@ -29,6 +33,10 @@
  *  step4 取得したデータを画面に表示してみよう
  *  2. 画像のようにTODOを表示してみましょう
  */
+// getInitialTasks().then(function (data) {
+//   // 取得したTODOのdataを画面に表示する処理を実行
+//   console.log("取得したTODOのdataを画面に表示する処理を実行");
+// });
 
 // ---
 
