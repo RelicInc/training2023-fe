@@ -4,18 +4,16 @@
  *  step2 要素を取得しよう
  *  esaのコードをコピペしてください
  */
-const form = document.getElementById("todo-form");
 
 /**
  *  step2 要素を取得しよう
  *  1. id="app-title"の要素を取得してください
  */
-const appTitle = document.getElementById("app-title");
+
 /**
  *  step2 要素を取得しよう
  *  2. 1で取得した要素に対して、`textContent プロパティ`を使用してテキストを好きに変更してみてください
  */
-appTitle.textContent = "DOMの研修中です。";
 
 /**
  *  step3 GETリクエストでDBからデータを取得しよう
@@ -23,67 +21,37 @@ appTitle.textContent = "DOMの研修中です。";
  */
 async function getInitialTasks() {
   // GET APIを叩き取得したdataを返却する処理
-  try {
-    const { data } = await axios.get(`http://localhost:3002/api/todo`);
-    return data.tasks;
-  } catch (err) {
-    console.error(err);
-  }
+  console.log("step:3 API叩きたい");
 }
 
 /**
  *  step4 取得したデータを画面に表示してみよう
  *  1. id = "task-list"の要素 (取得したTODOを追加する要素) を getElementId で取得してみましょう
  */
-const taskList = document.getElementById("task-list");
+
 /**
  *  step4 取得したデータを画面に表示してみよう
  *  2. 画像のようにTODOを表示してみましょう
  */
-const emptyPlaceholder = document.getElementById("empty-placeholder");
+// getInitialTasks().then(function (data) {
+//   // 取得したTODOのdataを画面に表示する処理を実行
+//   console.log("取得したTODOのdataを画面に表示する処理を実行");
+// });
 
-function addNewTask(taskId, taskName) {
-  const newTask = createTaskRow(taskId, taskName);
-  taskList.appendChild(newTask);
-  if (emptyPlaceholder) {
-    emptyPlaceholder.remove();
-  }
-}
-
-getInitialTasks().then(function (data) {
-  // 取得したTODOのdataを画面に表示する処理を実行
-  data.reverse().forEach(function (task) {
-    addNewTask(task.id, task.value);
-  });
-});
-// ----
+// ---
 
 // --- POSTリクエストでTODOを作成する ---
 
 /**
  * step2.「作成」ボタンに submitイベント を割り当てよう
  */
-form.addEventListener("submit", onSubmitPostTask);
+
 /**
  * step3. onSubmitPostTask関数内でPOSTリクエストを実行しTODOを作成しよう
  */
 async function onSubmitPostTask(event) {
-  console.log("event", event);
   event.preventDefault();
-  const taskName = event.target.elements.task_input_area.value;
-
-  try {
-    const { data } = await axios.post(`http://localhost:3002/api/todo`, {
-      value: taskName,
-    });
-    addNewTask(data.task.id, data.task.value);
-    event.target.elements.task_input_area.value = "";
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      console.error(err.message);
-    }
-    console.error(err);
-  }
+  console.log("送信しました。");
 }
 // ----
 
